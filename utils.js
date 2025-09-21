@@ -2,8 +2,9 @@
 const CONFIG = {
     SUPABASE_URL: 'https://xrwuylxyhfyexicnevka.supabase.co',
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhyd3V5bHh5aGZ5ZXhpY25ldmthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NjQyNDgsImV4cCI6MjA2NzE0MDI0OH0.YCoE4R2QdOnH8Hfws7MEHPdfYYwu5NXVd7r4Jizl0Fk',
-    GEMINI_API_KEY: 'AIzaSyCjrPNjb78ohaa0t3KqDAd2ls9LqXdtR4M',
-    RATE_LIMIT: 4,
+    GEMINI_API_KEY: 'AIzaSyB1rjMoaWzgJwQON9a8-T11fzdRbULVzDw',
+    //'AIzaSyCjrPNjb78ohaa0t3KqDAd2ls9LqXdtR4M',
+    RATE_LIMIT: 40,
     DEBUG: true
   };
   
@@ -63,6 +64,30 @@ const CONFIG = {
         return await response.json();
       } catch (error) {
         debugLog('Supabase error:', error);
+        throw error;
+      }
+    }
+
+    async rpc(functionName, params = {}) {
+      try {
+        const url = `${this.url}/rest/v1/rpc/${functionName}`;
+        const headers = {
+          'apikey': this.key,
+          'Authorization': `Bearer ${this.key}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        };
+        const response = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(params)
+        });
+        if (!response.ok) {
+          throw new Error(`Supabase RPC error: ${response.status} ${response.statusText}`);
+        }
+        return await response.json();
+      } catch (error) {
+        debugLog('Supabase RPC error:', error);
         throw error;
       }
     }
@@ -160,26 +185,65 @@ const CONFIG = {
       try {
         const supabase = new SupabaseClient();
         const today = new Date().toISOString().split('T')[0];
-        
-        const usage = await supabase.query('api_usage', 'select', null, {
-          user_id: userId,
-          date: today
-        });
-  
-        if (usage.length > 0) {
-          await supabase.query('api_usage', 'update', 
-            { count: usage[0].count + 1 }, 
-            { id: usage[0].id }
-          );
-        } else {
-          await supabase.query('api_usage', 'insert', {
-            user_id: userId,
-            date: today,
-            count: 1
+        // 1) Try server-side atomic RPC if available
+        try {
+          const rpcRes = await supabase.rpc('increment_api_usage', {
+            p_user_id: userId,
+            p_date: today,
+            p_limit: CONFIG.RATE_LIMIT
           });
+          // Expected shape: [{ allowed: boolean, count: number }]
+          const row = Array.isArray(rpcRes) ? rpcRes[0] : rpcRes;
+          if (row && typeof row.allowed !== 'undefined') {
+            debugLog('API usage increment via RPC:', row);
+            if (!row.allowed) throw new Error('Daily generation limit exceeded.');
+            return;
+          }
+        } catch (rpcErr) {
+          // If RPC/function not found (404) or any RPC error, fall back to REST flow
+          debugLog('RPC not available or failed, falling back to REST increment:', rpcErr?.message || rpcErr);
         }
         
-        debugLog('API usage incremented');
+        // 2) REST fallback with conflict handling and small retries
+        const maxRetries = 3;
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+          // Try fast path: select then update if exists
+          const usage = await supabase.query('api_usage', 'select', null, {
+            user_id: userId,
+            date: today
+          });
+
+          if (usage.length > 0) {
+            await supabase.query('api_usage', 'update',
+              { count: usage[0].count + 1 },
+              { id: usage[0].id }
+            );
+            debugLog('API usage incremented via update');
+            return;
+          }
+
+          try {
+            // Not found: try to insert a new row
+            await supabase.query('api_usage', 'insert', {
+              user_id: userId,
+              date: today,
+              count: 1
+            });
+            debugLog('API usage incremented via insert');
+            return;
+          } catch (insertErr) {
+            const msg = insertErr?.message || '';
+            if (msg.includes('409') || msg.toLowerCase().includes('conflict')) {
+              debugLog(`Insert conflict on attempt ${attempt}; retrying select+update`);
+              // Backoff a bit then retry
+              await new Promise(r => setTimeout(r, attempt * 50));
+              continue;
+            }
+            throw insertErr;
+          }
+        }
+        throw new Error('Failed to increment usage after retries');
+        
       } catch (error) {
         debugLog('Error incrementing usage:', error);
       }
