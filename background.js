@@ -120,7 +120,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ success: false, error: 'Unknown action' });
   }
 });
-
+// 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
 // Generate virtual try-on using Google Gemini API
 async function handleTryOnGeneration(data) {
   const { clothingImageUrl, userProfile, websiteUrl } = data;
