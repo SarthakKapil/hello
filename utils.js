@@ -2,8 +2,8 @@
 const CONFIG = {
     SUPABASE_URL: 'https://xrwuylxyhfyexicnevka.supabase.co',
     SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhyd3V5bHh5aGZ5ZXhpY25ldmthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1NjQyNDgsImV4cCI6MjA2NzE0MDI0OH0.YCoE4R2QdOnH8Hfws7MEHPdfYYwu5NXVd7r4Jizl0Fk',
-    GEMINI_API_KEY: 'AIzaSyB1rjMoaWzgJwQON9a8-T11fzdRbULVzDw',
-    //'AIzaSyCjrPNjb78ohaa0t3KqDAd2ls9LqXdtR4M',
+    GEMINI_API_KEY: 'AIzaSyCjrPNjb78ohaa0t3KqDAd2ls9LqXdtR4M',
+    //'AIzaSyB1rjMoaWzgJwQON9a8-T11fzdRbULVzDw',
     RATE_LIMIT: 40,
     DEBUG: true
   };
