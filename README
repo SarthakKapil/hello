@@ -1,0 +1,127 @@
+# Virtual Try-On Chrome Extension
+
+A powerful Chrome extension that enables virtual clothing try-ons on any e-commerce website using AI technology.
+
+## Features
+
+- **Smart Product Detection**: Automatically detects clothing items on e-commerce websites
+- **AI-Powered Try-On**: Uses Google Gemini AI to generate realistic virtual try-ons
+- **Universal Compatibility**: Works on Amazon, Myntra, and other e-commerce sites
+- **User Profile Management**: Complete profile setup with photo uploads
+- **Rate Limiting**: Built-in usage limits with daily tracking
+- **Secure Data Storage**: Supabase backend with proper security policies
+
+## Installation
+
+1. Download or clone this repository
+2. Open Chrome and navigate to `chrome://extensions/`
+3. Enable "Developer mode" in the top right
+4. Click "Load unpacked" and select the extension folder
+5. The extension icon will appear in your toolbar
+
+## Setup
+
+1. Click the extension icon to open the popup
+2. Fill in your profile information:
+   - Full name
+   - Gender
+   - Profile photo
+   - Full body photo (required for try-on generation)
+3. Save your profile
+
+## Usage
+
+1. Browse any clothing website (Amazon, Myntra, etc.)
+2. Look for the "👕 Try On" button on product images
+3. Click the button to generate your virtual try-on
+4. View results in the sliding sidebar
+5. Save, share, or download your try-on results
+
+## Technical Details
+
+### Architecture
+- **Manifest V3** Chrome Extension
+- **Supabase** for data storage and user management
+- **Google Gemini AI** for image generation
+- **Content Scripts** for website integration
+- **Service Worker** for background processing
+
+### Security
+- Row Level Security (RLS) enabled on all database tables
+- Secure API key management
+- CORS handling for cross-origin requests
+- Input validation and sanitization
+
+### Performance
+- Smart image detection with size filtering
+- Debounced overlay creation
+- Intersection observer for efficient DOM monitoring
+- Image compression before API calls
+
+## Rate Limits
+
+- 4 virtual try-on generations per day per user
+- Usage tracking with visual indicators
+- Automatic reset at midnight
+
+## Browser Support
+
+- Chrome 88+
+- Chromium-based browsers (Edge, Brave, etc.)
+
+## Privacy
+
+- All user data is stored securely in Supabase
+- Images are processed temporarily for AI generation
+- No data is shared with third parties
+- Users can delete their data at any time
+
+## Development
+
+### File Structure
+```
+├── manifest.json          # Extension manifest
+├── background.js          # Service worker
+├── content.js            # Content script for website integration
+├── content.css           # Styles for overlays and notifications
+├── popup.html/js/css     # Extension popup interface
+├── sidebar.html/js/css   # Try-on results sidebar
+├── utils.js              # Shared utilities and API functions
+├── icons/                # Extension icons
+└── supabase/migrations/  # Database schema
+```
+
+### Key Components
+
+1. **Content Script**: Detects product images and adds try-on overlays
+2. **Background Script**: Handles API calls and data management
+3. **Popup**: User profile management interface
+4. **Sidebar**: Try-on results and history display
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Support
+
+For issues or questions:
+- Create an issue on GitHub
+- Check the troubleshooting guide
+- Contact support team
+
+## Changelog
+
+### v1.0.0
+- Initial release
+- Basic virtual try-on functionality
+- User profile management
+- Supabase integration
+- Rate limiting system

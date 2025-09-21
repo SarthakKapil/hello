@@ -1,0 +1,162 @@
+/* Virtual Try-On Content Styles */
+
+.vto-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: linear-gradient(135deg, #3B82F6, #1E40AF);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    opacity: 0.9;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+  }
+  
+  .vto-overlay:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  }
+  
+  .vto-overlay:active {
+    transform: translateY(0);
+  }
+  
+  .vto-overlay--processing {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    pointer-events: none;
+  }
+  
+  .vto-overlay--processing .vto-spinner {
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: vto-spin 1s linear infinite;
+  }
+  
+  @keyframes vto-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Image container relative positioning */
+  .vto-image-container {
+    position: relative !important;
+    overflow: visible !important;
+  }
+  
+  /* Notification styles */
+  .vto-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    max-width: 400px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    animation: vto-slide-in 0.3s ease-out;
+  }
+  
+  .vto-notification--error {
+    border-left: 4px solid #EF4444;
+  }
+  
+  .vto-notification--success {
+    border-left: 4px solid #10B981;
+  }
+  
+  .vto-notification--warning {
+    border-left: 4px solid #F59E0B;
+  }
+  
+  .vto-notification__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .vto-notification__message {
+    font-size: 14px;
+    line-height: 1.4;
+    color: #374151;
+  }
+  
+  .vto-notification__close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #9CA3AF;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+  
+  .vto-notification__close:hover {
+    background: #F3F4F6;
+    color: #374151;
+  }
+  
+  @keyframes vto-slide-in {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Sidebar overlay */
+  .vto-sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .vto-sidebar-overlay.vto-sidebar-overlay--visible {
+    opacity: 1;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .vto-overlay {
+      padding: 6px 8px;
+      font-size: 11px;
+      border-radius: 6px;
+    }
+    
+    .vto-notification {
+      top: 10px;
+      right: 10px;
+      left: 10px;
+      max-width: none;
+    }
+  }

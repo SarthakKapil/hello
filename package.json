@@ -1,0 +1,22 @@
+{
+    "name": "virtual-tryon-chrome-extension",
+    "version": "1.0.0",
+    "description": "AI-powered virtual clothing try-on Chrome extension",
+    "main": "background.js",
+    "scripts": {
+      "build": "echo 'Extension ready for loading'",
+      "dev": "echo 'Load extension in Chrome Developer Mode'",
+      "test": "echo 'No tests configured'"
+    },
+    "keywords": [
+      "chrome-extension",
+      "virtual-tryon",
+      "ai",
+      "fashion",
+      "e-commerce"
+    ],
+    "author": "Virtual Try-On Team",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {}
+  }

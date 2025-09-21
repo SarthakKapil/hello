@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Try-On Results</title>
+  <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar__header">
+      <h2 class="sidebar__title">Virtual Try-On</h2>
+      <button class="sidebar__close" id="closeBtn">&times;</button>
+    </div>
+
+    <div class="sidebar__content">
+      <!-- Loading State -->
+      <div class="loading-state" id="loadingState">
+        <div class="loading-state__spinner"></div>
+        <h3 class="loading-state__title">Generating Your Try-On</h3>
+        <p class="loading-state__subtitle">This may take a few moments...</p>
+        <div class="loading-state__progress">
+          <div class="progress-bar">
+            <div class="progress-bar__fill"></div>
+          </div>
+          <p class="progress-text">Processing images...</p>
+        </div>
+      </div>
+
+      <!-- Result State -->
+      <div class="result-state" id="resultState" style="display: none;">
+        <div class="result-images">
+          <div class="image-comparison">
+            <div class="image-item">
+              <img class="result-image" id="originalImage" alt="Original Item">
+              <label class="image-label">Original</label>
+            </div>
+            <div class="image-divider">
+              <span class="divider-icon">→</span>
+            </div>
+            <div class="image-item">
+              <img class="result-image" id="generatedImage" alt="Virtual Try-On">
+              <label class="image-label">Your Try-On</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn btn--primary" id="saveBtn">
+            <span class="btn-icon">💾</span>
+            Save Result
+          </button>
+          <button class="btn btn--secondary" id="shareBtn">
+            <span class="btn-icon">📤</span>
+            Share
+          </button>
+          <button class="btn btn--outline" id="downloadBtn">
+            <span class="btn-icon">⬇️</span>
+            Download
+          </button>
+        </div>
+
+        <div class="result-info">
+          <div class="info-item">
+            <span class="info-label">Generated:</span>
+            <span class="info-value" id="timestamp">Just now</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Quality:</span>
+            <span class="info-value">High Definition</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" id="errorState" style="display: none;">
+        <div class="error-icon">⚠️</div>
+        <h3 class="error-title">Generation Failed</h3>
+        <p class="error-message" id="errorMessage">Something went wrong. Please try again.</p>
+        <div class="error-actions">
+          <button class="btn btn--primary" id="retryBtn">Try Again</button>
+          <button class="btn btn--outline" id="reportBtn">Report Issue</button>
+        </div>
+      </div>
+
+      <!-- History Section -->
+      <div class="history-section" id="historySection" style="display: none;">
+        <h3 class="history-title">Recent Try-Ons</h3>
+        <div class="history-list" id="historyList">
+          <!-- History items will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar__footer">
+      <div class="usage-info">
+        <span class="usage-text">Generations used today: <span id="usageCount">0</span>/4</span>
+        <div class="usage-bar">
+          <div class="usage-bar__fill" id="usageBar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidebar.js"></script>
+</body>
+</html>

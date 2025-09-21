@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Try-On Profile</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup">
+    <div class="popup__header">
+      <div class="popup__logo">
+        <span class="popup__logo-icon">👕</span>
+        <h1 class="popup__title">Virtual Try-On</h1>
+      </div>
+      <div class="popup__status" id="status">
+        <span class="popup__status-dot"></span>
+        <span class="popup__status-text">Ready</span>
+      </div>
+    </div>
+
+    <div class="popup__content">
+      <!-- Profile Form -->
+      <div class="profile-form" id="profileForm">
+        <div class="form-group">
+          <label for="name" class="form-label">Full Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            class="form-input" 
+            placeholder="Enter your name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="gender" class="form-label">Gender</label>
+          <select id="gender" class="form-select" required>
+            <option value="">Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="profileImage" class="form-label">Profile Photo</label>
+          <div class="image-upload">
+            <input 
+              type="file" 
+              id="profileImage" 
+              class="image-input" 
+              accept="image/jpeg,image/jpg,image/png"
+            >
+            <div class="image-upload__preview" id="profileImagePreview">
+              <div class="image-upload__placeholder">
+                <span class="image-upload__icon">📷</span>
+                <span class="image-upload__text">Upload Profile Photo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fullBodyImage" class="form-label">Full Body Photo</label>
+          <div class="image-upload">
+            <input 
+              type="file" 
+              id="fullBodyImage" 
+              class="image-input" 
+              accept="image/jpeg,image/jpg,image/png"
+            >
+            <div class="image-upload__preview" id="fullBodyImagePreview">
+              <div class="image-upload__placeholder">
+                <span class="image-upload__icon">🧍</span>
+                <span class="image-upload__text">Upload Full Body Photo</span>
+              </div>
+            </div>
+          </div>
+          <p class="form-help">Use a clear, full-body photo with good lighting</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn--primary" id="saveProfile">
+            <span class="btn__text">Save Profile</span>
+            <span class="btn__spinner" style="display: none;"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Profile Display -->
+      <div class="profile-display" id="profileDisplay" style="display: none;">
+        <div class="profile-card">
+          <div class="profile-card__header">
+            <img class="profile-card__avatar" id="displayAvatar" src="" alt="Profile">
+            <div class="profile-card__info">
+              <h3 class="profile-card__name" id="displayName"></h3>
+              <p class="profile-card__gender" id="displayGender"></p>
+            </div>
+          </div>
+          
+          <div class="profile-card__stats">
+            <div class="stat">
+              <span class="stat__value" id="usageCount">0</span>
+              <span class="stat__label">Try-ons Today</span>
+            </div>
+            <div class="stat">
+              <span class="stat__value" id="remainingCount">4</span>
+              <span class="stat__label">Remaining</span>
+            </div>
+          </div>
+
+          <div class="profile-card__actions">
+            <button class="btn btn--secondary" id="editProfile">
+              Edit Profile
+            </button>
+            <button class="btn btn--outline" id="viewHistory">
+              View History
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Instructions -->
+      <div class="instructions">
+        <h3 class="instructions__title">How to Use:</h3>
+        <ol class="instructions__list">
+          <li>Browse any clothing website</li>
+          <li>Look for the "👕 Try On" button on product images</li>
+          <li>Click to generate your virtual try-on</li>
+          <li>View results in the sidebar</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="popup__footer">
+      <p class="popup__version">v1.0.0</p>
+      <div class="popup__links">
+        <a href="#" class="popup__link" id="helpLink">Help</a>
+        <a href="#" class="popup__link" id="feedbackLink">Feedback</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
